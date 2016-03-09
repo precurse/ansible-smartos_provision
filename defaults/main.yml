@@ -1,2 +1,8 @@
----
-# defaults file for smartos_provision
+provision_mode: 0
+hypervisor_ip: 10.0.3.2
+hypervisor_user: root
+local_ssh_path: /usr/bin/python2.7
+cpu_cap: 100
+max_phy_mem: 512
+quota: 10
+brand: joyent
