@@ -1,0 +1,13 @@
+- name: Creating Ansible tmp file
+  local_action: command mktemp /tmp/ansible.XXXXXXX
+  register: tmp_json
+  when: MODE == 'provision'
+- name: Populating template file
+  local_action: template src={{ template_file }} dest={{ tmp_json.stdout }}
+  when: MODE == 'provision'
+- name: Importing image uuid
+  local_action: shell {{ local_ssh_path }} {{ hypervisor_user }}@{{ hypervisor_ip }} imgadm import {{ image_uuid }}
+  when: MODE == 'provision'
+- name: Provisioning Instance
+  local_action: shell cat {{ tmp_json.stdout }} | /usr/bin/ssh {{ hypervisor_user }}@{{ hypervisor_ip }} vmadm create
+  when: MODE == 'provision'
