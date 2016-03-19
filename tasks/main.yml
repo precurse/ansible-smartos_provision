@@ -11,3 +11,5 @@
 - name: Provisioning Instance
   local_action: shell cat {{ tmp_json.stdout }} | /usr/bin/ssh {{ hypervisor_user }}@{{ hypervisor_ip }} vmadm create
   when: provision_mode != 0 
+- local_action: wait_for host={{ ip }} port=22 search_regex=OpenSSH delay=10
+  when: provision_mode != 0

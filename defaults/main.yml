@@ -6,3 +6,4 @@ cpu_cap: 100
 max_phy_mem: 512
 quota: 10
 brand: joyent
+kernel_version: 3.16.0
