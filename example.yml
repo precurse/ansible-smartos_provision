@@ -23,7 +23,7 @@
       - 8.8.4.4
     nics:
       - {interface: "net0", nic_tag: "external", vlan_id: "4", ip: "10.0.4.10", netmask: "255.255.255.0", gateway: "10.0.4.1"}
-      - {interface: "eth1", nic_tag: "stub0", ip: "10.0.1.3", netmask: "255.255.255.0"}
+      - {interface: "net1", nic_tag: "stub0", ip: "10.0.1.3", netmask: "255.255.255.0"}
     filesystems:
       - {source: "/zones/data/somedata", target: "/media/somedata", read_only: false}
       - {source: "/zones/data/moredata", target: "/media/moredata", read_only: false}

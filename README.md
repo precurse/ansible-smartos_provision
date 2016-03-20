@@ -39,13 +39,14 @@ Example Playbook
         alias: shell 
         domain: signet
         ip: 10.0.4.10
-        resolver: 10.0.4.1
-        admin_group: adm
         user_script: "/usr/sbin/mdata-get root_authorized_keys > ~root/.ssh/authorized_keys ; /usr/sbin/mdata-get root_authorized_keys > ~admin/.ssh/authorized_keys"
         ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCX5NmP23FhXZ+YiV3unu/Bz6h5oaeJyx3J5EaJOi4de0im3MV1aXZlpYnF0MfpmRxYl2S2pUEJXjW/toA48A+zYjHI7xReKZ9MpCsDBlW4Vfl6EjaoZqN3Hc4P5wK/BiMkSIgURFRJukus1ajRvV+YZiAaRyTwgkhmF20ZdOOIAPiugaoEYg+6iQ5CJZURw1VLJ+UViCC7cBcC4AOjKcbEaLf9RzjISzAs78fN7G60+P5fyAsIinDhKC2VJE/AkxjFtQAdBlt3HNhWnLfd2jmClRNA24Ob/gL3i3OWecWdEsERSypDiOFZI/sRHDKih1mkESbiZiHHMiZRCO34Fqpx piranha@laptop"
+        resolvers:
+          - 8.8.8.8 
+          - 8.8.4.4
         nics:
           - {interface: "net0", nic_tag: "external", vlan_id: "4", ip: "10.0.4.10", netmask: "255.255.255.0", gateway: "10.0.4.1"}
-          - {interface: "eth1", nic_tag: "stub0", ip: "10.0.1.3", netmask: "255.255.255.0"}
+          - {interface: "net1", nic_tag: "stub0", ip: "10.0.1.3", netmask: "255.255.255.0"}
         filesystems:
           - {source: "/zones/data/somedata", target: "/media/somedata", read_only: false}
           - {source: "/zones/data/moredata", target: "/media/moredata", read_only: false}
