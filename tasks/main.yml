@@ -2,6 +2,7 @@
   local_action: command mktemp /tmp/ansible.XXXXXXX
   register: tmp_json
   when: provision_mode != 0 
+- debug: var=hostvars[inventory_hostname]
 - name: Populating template file
   local_action: template src={{ template_file }} dest={{ tmp_json.stdout }}
   when: provision_mode != 0 

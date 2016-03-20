@@ -10,6 +10,7 @@
 , "alias": "{{ alias }}"
 , "hostname": "{{ alias }}.{{ domain }}"
 , "quota": "{{ quota }}"
+, "dns_domain": "{{ domain }}"
 , "resolvers": [
   {% for r in resolvers %}
     {% if loop.first %}
@@ -33,9 +34,9 @@
    {% endif %}
    "netmask": "{{ nic.netmask }}"
   }
-    {% if not loop.last %}
+   {% if not loop.last %}
     ,
-    {% endif %}
+   {% endif %}
   {% endfor %}
  ]
 {% if filesystems is defined %}
@@ -64,4 +65,3 @@
   }
 
 }
-
