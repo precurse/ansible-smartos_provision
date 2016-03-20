@@ -1,0 +1,67 @@
+{
+ "autoboot": {{ autoboot }}
+,"brand": "{{ brand }}"
+ {% if "lx" in brand %}
+   ,"kernel_version": "{{ kernel_version }}"
+ {% endif %}
+,"image_uuid": "{{ image_uuid }}"
+, "max_physical_memory": {{ max_phy_mem }}
+, "cpu_cap": {{ cpu_cap }}
+, "alias": "{{ alias }}"
+, "hostname": "{{ alias }}.{{ domain }}"
+, "quota": "{{ quota }}"
+, "resolvers": [
+  {% for r in resolvers %}
+    {% if loop.first %}
+      "{{ r }}"
+    {% else %}
+      ,"{{ r }}"
+    {% endif %}
+  {% endfor %}
+ ]
+, "nics": [
+ {% for nic in nics %}
+  {
+   "interface": "{{ nic.interface }}",
+   "nic_tag": "{{ nic.nic_tag}}",
+   {% if nic.vlan_id is defined %}
+    "vlan_id": "{{ nic.vlan_id }}", 
+   {% endif}
+   "ip": "{{ nic.ip }}",
+   {% if nic.gateway is defined }
+    "gateway": "{{ nic.gateway }}",
+   {% endif %}
+   "netmask": "{{ nic.netmask }}"
+  }
+    {% if not loop.last %}
+    ,
+    {% endif %}
+  {% endfor %}
+ ]
+{% if filesystems is defined %}
+,"filesystems": [
+  {% for fs in filesystems %}
+    {
+      "source": "{{ fs.source }}",
+      "target": "{{ fs.target }}",
+      "type": "lofs",
+      "options": [
+        {% if fs.read_only %}
+        "ro",
+	{% endif %} 
+        "nodevices"
+      ]
+    }
+    {% if not loop.last %}
+      ,
+    {% endif %}
+  {% endfor %}
+  ]
+{% endif %}
+,"customer_metadata": {
+     "root_authorized_keys":"{{ ssh_key }}",
+     "user-script" : "{{ user_script }}"
+  }
+
+}
+
