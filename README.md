@@ -16,20 +16,22 @@ Role Variables
 --------------
 Most of these can be understood in the `man vmadm` PROPERTIES section.
 ```
-hypervisor_ip [REQUIRED]  IP address of the SmartOS global zone)
+hypervisor_ip [REQUIRED]  IP address of the SmartOS global zone
 hypervisor_user [OPTIONAL] SSH user of the SmartOS global zone. (default: root)
 provision_mode [OPTIONAL] Whether to provision virtual machine or not (default: 0)
-autoboot [OPTIONAL] "true" or "false"  (default: true)
+autoboot [OPTIONAL] "true" or "false"  (default: "true")
+
 image_uuid: `imgadm avail` from SmartOS global zone has possible values.
    Listed at  https://docs.joyent.com/public-cloud/instances/infrastructure/images/ as well
-alias [REQUIRED] synonymous with hostname)
+
+alias [REQUIRED] Synonymous with virtual machine hostname
 cpu_cap [OPTIONAL] (default: 100)
 max_phy_mem [OPTIONAL] (default: 512)
-quota [OPTIONAL] default=10)
+quota [OPTIONAL] (default: 10)
 brand [OPTIONAL] joyent or lx (default: joyent)
-domain [OPTIONAL]  (default=local)
+domain [OPTIONAL]  (default: local)
 
-user_script [OPTIONAL]  (default is below)
+user_script [OPTIONAL]  (default script below)
  It's common to use a script such as this one to copy the root_authorized_keys variable into `root` and `admin` on the newly created virtual machine:
  "/usr/sbin/mdata-get root_authorized_keys > ~root/.ssh/authorized_keys ; /usr/sbin/mdata-get root_authorized_keys > ~admin/.ssh/authorized_keys"
 
@@ -37,9 +39,10 @@ root_authorized_keys [REQUIRED]
   Populate this with public ssh-key that the ansible client can connect with.
 
 resolvers [REQUIRED] Minimum of 1 is required.
-  e.g: resolvers:
-         - 8.8.8.8
-         - 8.8.4.4
+  example:
+  resolvers:
+    - 8.8.8.8
+    - 8.8.4.4
 
 nics [REQUIRED]
   Each listed nic has the following options:
@@ -50,18 +53,21 @@ nics [REQUIRED]
    - netmask [REQUIRED]
    - gateway [OPTIONAL]
 
-  e.g: nics:
-         - {interface: "net0", nic_tag: "external", vlan_id: "4", ip: "10.0.4.10", netmask: "255.255.255.0", gateway: "10.0.4.1"}
+  example:
+  nics:
+    - {interface: "net0", nic_tag: "external", vlan_id: "4", ip: "10.0.4.10", netmask: "255.255.255.0", gateway: "10.0.4.1"}
 
 filesystems [OPTIONAL]
-  The filesystem source must exist on the global zone before it can be shared to the virtual machine.
+  The filesystem source must exist on the global zone before it can be shared to the virtual machine. A `zfs create zones/data/somedata` should be ran once before adding a filesystem to a virtual machine.
+
   Each filesystem listed has the following variables:
   - source [REQUIRED] Mount point from global zone.
   - target [REQUIRED] Where to mount inside virtual machine.
   - read_only [REQUIRED] true or false.
 
-  e.g: filesystems:
-         - {source: "/zones/data/somedata", target: "/export/somedata", read_only: false}
+  example:
+  filesystems:
+    - {source: "/zones/data/somedata", target: "/export/somedata", read_only: false}
 ```
 Dependencies
 ------------
