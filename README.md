@@ -23,7 +23,6 @@ autoboot [OPTIONAL] "true" or "false"  (default: true)
 image_uuid: `imgadm avail` from SmartOS global zone has possible values.
    Listed at  https://docs.joyent.com/public-cloud/instances/infrastructure/images/ as well
 alias [REQUIRED] synonymous with hostname)
-mgmt_ip: [REQUIRED] IP to manage virtual machine by SSH (REQUIRED)
 cpu_cap [OPTIONAL] (default: 100)
 max_phy_mem [OPTIONAL] (default: 512)
 quota [OPTIONAL] default=10)
@@ -43,7 +42,7 @@ resolvers [REQUIRED] Minimum of 1 is required.
          - 8.8.4.4
 
 nics [REQUIRED]
-  Each nic listed has the following options:
+  Each listed nic has the following options:
    - interface [REQUIRED]
    - nic_tag [REQUIRED]
    - vlan_id [OPTIONAL]
@@ -88,7 +87,6 @@ Example Playbook
         brand: joyent
         alias: shell
         domain: signet
-        mgmt_ip: 10.0.4.10
         user_script: "/usr/sbin/mdata-get root_authorized_keys > ~root/.ssh/authorized_keys ; /usr/sbin/mdata-get root_authorized_keys > ~admin/.ssh/authorized_keys"
         root_authorized_keys: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCX5NmP23FhXZ+YiV3unu/Bz6h5oaeJyx3J5EaJOi4de0im3MV1aXZlpYnF0MfpmRxYl2S2pUEJXjW/toA48A+zYjHI7xReKZ9MpCsDBlW4Vfl6EjaoZqN3Hc4P5wK/BiMkSIgURFRJukus1ajRvV+YZiAaRyTwgkhmF20ZdOOIAPiugaoEYg+6iQ5CJZURw1VLJ+UViCC7cBcC4AOjKcbEaLf9RzjISzAs78fN7G60+P5fyAsIinDhKC2VJE/AkxjFtQAdBlt3HNhWnLfd2jmClRNA24Ob/gL3i3OWecWdEsERSypDiOFZI/sRHDKih1mkESbiZiHHMiZRCO34Fqpx precurse"
         resolvers:
