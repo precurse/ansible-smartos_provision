@@ -49,7 +49,7 @@
       ,"options": [
         {% if fs.read_only %}
         "ro",
-	{% endif %} 
+	{% endif %}
         "nodevices"
       ]
     }
@@ -60,7 +60,7 @@
   ]
 {% endif %}
 ,"customer_metadata": {
-     "root_authorized_keys":"{{ ssh_key }}"
+     "root_authorized_keys":"{{ root_authorized_keys }}"
      ,"user-script" : "{{ user_script }}"
   }
 

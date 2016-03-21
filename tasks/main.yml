@@ -1,15 +1,16 @@
 - name: Creating Ansible tmp file
   local_action: command mktemp /tmp/ansible.XXXXXXX
   register: tmp_json
-  when: provision_mode != 0 
+  when: provision_mode != 0
 - name: Populating template file
   local_action: template src={{ template_file }} dest={{ tmp_json.stdout }}
-  when: provision_mode != 0 
+  when: provision_mode != 0
 - name: Importing image uuid
   local_action: shell /usr/bin/ssh {{ hypervisor_user }}@{{ hypervisor_ip }} imgadm import {{ image_uuid }}
   when: provision_mode != 0
 - name: Provisioning Instance
   local_action: shell cat {{ tmp_json.stdout }} | /usr/bin/ssh {{ hypervisor_user }}@{{ hypervisor_ip }} vmadm create
-  when: provision_mode != 0 
-- local_action: wait_for host={{ ip }} port=22 search_regex=OpenSSH delay=10
+  when: provision_mode != 0
+- name: Waiting 10 secs for SSH daemon
+  local_action: wait_for host={{ nics[0]['ip'] }} port=22 search_regex=OpenSSH delay=10
   when: provision_mode != 0

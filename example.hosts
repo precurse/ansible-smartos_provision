@@ -1,2 +1,5 @@
+[smartos]
+smartos.signet ansible_connection=local
+
 [shell]
 shell.signet
