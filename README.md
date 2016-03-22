@@ -1,7 +1,7 @@
 SmartOS Provision
 =========
 
-This role provisions virtual machine on a SmartOS host using Ansible.
+This role provisions virtual machines on a SmartOS host using Ansible.
 
 Requirements
 ------------
@@ -14,7 +14,7 @@ locally and then pushed to SmartOS via SSH.
 
 Role Variables
 --------------
-Most of these can be understood in the [man vmadm](https://smartos.org/man/1m/vmadm) PROPERTIES section.
+Most of these can be understood in the [man vmadm](https://smartos.org/man/1m/vmadm#PROPERTIES) PROPERTIES section.
 ```
 hypervisor_ip [REQUIRED]  IP address of the SmartOS global zone
 hypervisor_user [OPTIONAL] SSH user of the SmartOS global zone. (default: root)
@@ -29,6 +29,7 @@ cpu_cap [OPTIONAL] (default: 100)
 max_phy_mem [OPTIONAL] (default: 512)
 quota [OPTIONAL] (default: 10)
 brand [OPTIONAL] joyent or lx (default: joyent)
+kernel_version [OPTIONAL] used if brand is lx (default: 3.16.0)
 domain [OPTIONAL]  (default: local)
 
 user_script [OPTIONAL]  (default script below)
@@ -124,6 +125,7 @@ Current Limitations
 -------------------
 - VMs cannot currently be deleted or re-provisioned. If you are overwriting a currently running machine, you must manually run `vmadm destroy UUID` from SmartOS.
 - If a virtual machine has is listed `~/.ssh/known_hosts` it must be removed or else it can cause errors while trying to manage the virtual machine.
+- Only Zones (joyent/lx) are tested for provisioning at this time.
 
 License
 -------
