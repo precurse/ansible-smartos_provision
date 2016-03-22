@@ -10,11 +10,11 @@ NOTE: This role is under heavy development. It is not recommended for production
 
 Your ssh key must be installed on the root user (/root/.ssh/authorized_keys) on your SmartOS global zone.
 The global zone itself doesn't need python installed for this to function since templates are created
-locally and then pushed over ssh to the SmartOS commands.
+locally and then pushed to SmartOS via SSH.
 
 Role Variables
 --------------
-Most of these can be understood in the `man vmadm` PROPERTIES section.
+Most of these can be understood in the [man vmadm](https://smartos.org/man/1m/vmadm) PROPERTIES section.
 ```
 hypervisor_ip [REQUIRED]  IP address of the SmartOS global zone
 hypervisor_user [OPTIONAL] SSH user of the SmartOS global zone. (default: root)
@@ -22,7 +22,7 @@ provision_mode [OPTIONAL] Whether to provision virtual machine or not (default: 
 autoboot [OPTIONAL] "true" or "false"  (default: "true")
 
 image_uuid: `imgadm avail` from SmartOS global zone has possible values.
-   Listed at  https://docs.joyent.com/public-cloud/instances/infrastructure/images/ as well
+   Listed here: https://docs.joyent.com/public-cloud/instances/infrastructure/images as well.
 
 alias [REQUIRED] Synonymous with virtual machine hostname
 cpu_cap [OPTIONAL] (default: 100)
