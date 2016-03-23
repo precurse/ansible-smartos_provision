@@ -119,7 +119,7 @@ ssh-add ~/.ssh/id_rsa
 ansible-playbook -i example.hosts example.yml
 ```
 It's advised to keep `provision_mode` set to 0 by default and running the following when you'd like to create the VM:
-ansible-playbook -i production shell.yml --extra-vars "provision_mode=1"
+`ansible-playbook -i example.hosts example.yml --extra-vars "provision_mode=1"`
 
 Current Limitations
 -------------------
