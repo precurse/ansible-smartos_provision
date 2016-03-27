@@ -9,8 +9,13 @@ Requirements
 NOTE: This role is under heavy development. It is not recommended for production systems at this time. There is currently no chance of virtual machine deletions since that functionality hasn't been included yet.
 
 Your ssh key must be installed on the root user (/root/.ssh/authorized_keys) on your SmartOS global zone.
-The global zone itself doesn't need python installed for this to function since templates are created
-locally and then pushed to SmartOS via SSH.
+
+### Python
+NOTE: Python on the SmartOS global zone is now a requirement.
+
+While it is strongly recommended setting `hypervisor_install_python` to true (file checksumming is done before install to be safe), you can still install it manually using `pkgin in python27` after installing  bootstrap-YYYYQ#-tools.tar.gz.
+
+https://pkgsrc.joyent.com/install-on-illumos/ has the manual instructions. Ensure you use the `bootstrap-2015Q4-tools.tar.gz` file.
 
 Set `ansible_user` and `ansible_python_interpreter` for SmartOS global zone under your inventory file like so:
 
@@ -89,11 +94,6 @@ filesystems [OPTIONAL]
 ```
 Dependencies
 ------------
-NOTE: Python on the SmartOS global zone is now a requirement.
-
-While it is strongly recommended setting `hypervisor_install_python` to true (file checksumming is done before install to be safe), you can still install it manually using the bootstrap-YYYYQ#-tools.tar.gz package.
-
-https://pkgsrc.joyent.com/install-on-illumos/ has the manual instructions. Ensure you use the `bootstrap-2015Q4-tools.tar.gz` file.
 
 
 Example Playbook
