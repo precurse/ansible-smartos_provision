@@ -12,7 +12,7 @@ Your ssh key must be installed on the root user (/root/.ssh/authorized_keys) on 
 The global zone itself doesn't need python installed for this to function since templates are created
 locally and then pushed to SmartOS via SSH.
 
-Set `remote_user` and `ansible_python_interpreter` for SmartOS Global Zone under your inventory file like so:
+Set `remote_user` and `ansible_python_interpreter` for SmartOS global zone under your inventory file like so:
 
 ```
 [smartos]
@@ -28,7 +28,7 @@ Role Variables
 Most of these can be understood in the [man vmadm](https://smartos.org/man/1m/vmadm#PROPERTIES) PROPERTIES section.
 ```
 hypervisor_host [REQUIRED]  IP or hostname of the SmartOS global zone
-hypervisor_install_python [OPTIONAL] Tells Ansible to install Python on SmartOS Global Zone (options: true or false. default: false)
+hypervisor_install_python [OPTIONAL] Tells Ansible to install python on SmartOS global zone (options: true or false. default: false)
 provision_mode [OPTIONAL] Whether to provision virtual machine or not (options: true or false. default: false)
 autoboot [OPTIONAL] (options: "true" or "false". default: "true")
 
@@ -83,9 +83,9 @@ filesystems [OPTIONAL]
 ```
 Dependencies
 ------------
-NOTE: Python is now a SmartOS Global Zone requirement with this role.
+NOTE: Python on the SmartOS global zone is now a requirement.
 
-While it is strongly recommended setting `hypervisor_install_python` to true (file checksumming is done before install), you can still install it manually using the bootstrap-YYYYQ#-tools.tar.gz package.
+While it is strongly recommended setting `hypervisor_install_python` to true (file checksumming is done before install to be safe), you can still install it manually using the bootstrap-YYYYQ#-tools.tar.gz package.
 
 https://pkgsrc.joyent.com/install-on-illumos/ has the manual instructions. Ensure you use the `bootstrap-2015Q4-tools.tar.gz` file.
 
