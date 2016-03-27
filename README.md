@@ -8,7 +8,7 @@ Requirements
 
 NOTE: This role is under heavy development. It is not recommended for production systems at this time. There is currently no chance of virtual machine deletions since that functionality hasn't been included yet.
 
-Your ssh key must be installed on the root user (/root/.ssh/authorized_keys) on your SmartOS global zone.
+Your ssh key must be installed on an admin user (generally root: /root/.ssh/authorized_keys) on your SmartOS global zone.
 
 ### Python
 NOTE: Python on the SmartOS global zone is now a requirement.
@@ -16,6 +16,8 @@ NOTE: Python on the SmartOS global zone is now a requirement.
 While it is strongly recommended setting `hypervisor_install_python` to true (file checksumming is done before install to be safe), you can still install it manually using `pkgin in python27` after installing  bootstrap-YYYYQ#-tools.tar.gz.
 
 https://pkgsrc.joyent.com/install-on-illumos/ has the manual instructions. Ensure you use the `bootstrap-2015Q4-tools.tar.gz` file.
+
+### SmartOS Global Zone Inventory
 
 Set `ansible_user` and `ansible_python_interpreter` for SmartOS global zone under your inventory file like so:
 
@@ -129,6 +131,10 @@ Example Playbook
       - {source: "/zones/data/somedata", target: "/export/somedata", read_only: false}
       - {source: "/zones/data/moredata", target: "/export/moredata", read_only: false}
 ```
+
+Additional Example Playbooks
+---------
+https://github.com/precurse/playbooks
 
 Notes
 -----
