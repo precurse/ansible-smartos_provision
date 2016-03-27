@@ -5,14 +5,23 @@
  
 - name: Get linux image uuid from name
   command: imgadm avail -j name={{ image_name }} type=lx-dataset
-  register: imgadm_raw
+  register: imgadm_raw_name
   when: image_uuid is not defined and brand == "lx"
- 
-- name: Parse imgadm output
-  set_fact: imgadm_clean="{{ imgadm_raw.stdout|from_json }}"
-  when: image_uuid is not defined
- 
-- name: Set image uuid from name
+
+- name: Get linux kernel version from uuid
+  command: imgadm avail -j uuid={{ image_uuid }} type=lx-dataset
+  register: imgadm_raw_uuid
+  when: image_uuid is defined and brand == "lx"
+
+- name: Parse imgadm (by name) output
+  set_fact: imgadm_clean="{{ imgadm_raw_name.stdout|from_json }}"
+  when: image_uuid is not defined and brand == "lx"
+
+- name: Parse imgadm (by uuid) output
+  set_fact: imgadm_clean="{{ imgadm_raw_uuid.stdout|from_json }}"
+  when: image_uuid is defined and brand == "lx"
+
+- name: Set image vars from imgadm output
   set_fact:
     image_uuid: "{{ imgadm_clean[-1]['manifest']['uuid'] }}"
     kernel_version: "{{ imgadm_clean[-1]['manifest']['tags']['kernel_version'] }}"

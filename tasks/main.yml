@@ -42,11 +42,6 @@
   delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
 
-- name: Importing image uuid
-  shell: imgadm import {{ image_uuid }}
-  delegate_to: "{{ hypervisor_host }}"
-  when: provision_mode
-
 - name: Provisioning virtual machine
   shell: cat {{ tmp_json.stdout }} | vmadm create
   delegate_to: "{{ hypervisor_host }}"

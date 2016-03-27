@@ -46,7 +46,7 @@ cpu_cap [OPTIONAL] (default: 100)
 max_phy_mem [OPTIONAL] (default: 512)
 quota [OPTIONAL] (default: 10)
 brand [OPTIONAL] (options: joyent or lx. default: joyent)
-kernel_version [OPTIONAL] (only used if brand set to lx. default: 3.16.0)
+kernel_version [OPTIONAL] (Automatically detected based on image metadata. fallback: 3.16.0)
 domain [OPTIONAL]  (default: local)
 
 user_script [OPTIONAL]  (default script below)
