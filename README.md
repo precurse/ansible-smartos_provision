@@ -19,7 +19,7 @@ Set `remote_user` and `ansible_python_interpreter` for SmartOS global zone under
 smartos.local
 
 [smartos:vars]
-remote_user=root
+ansible_user=root
 ansible_python_interpreter=/opt/tools/bin/python2
 ```
 
@@ -34,6 +34,12 @@ autoboot [OPTIONAL] (options: "true" or "false". default: "true")
 
 image_uuid: `imgadm avail` from SmartOS global zone has possible values.
    Listed here: https://docs.joyent.com/public-cloud/instances/infrastructure/images as well.
+
+image_name: `imgadm avail` from SmartOS global zone will show possible values.
+
+  NOTE: This should be used instead of image_uuid when the latest
+     version of an image is desired. If image_uuid is also set,
+     image_name will be ignored.
 
 alias [REQUIRED] Synonymous with virtual machine hostname
 cpu_cap [OPTIONAL] (default: 100)
@@ -103,7 +109,8 @@ Example Playbook
         hypervisor_install_python: true
         provision_mode: false  # default
         autoboot: "true"  # default
-        image_uuid: c540b62c-beb2-11e5-8512-8b1694a57f84  # minimal-64-lts
+        image_uuid: c540b62c-beb2-11e5-8512-8b1694a57f84
+        image_name: minimal-64-lts
         cpu_cap: 100  # default
         max_phy_mem: 512  # default
         quota: 10  # default

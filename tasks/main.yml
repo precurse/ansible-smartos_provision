@@ -1,59 +1,58 @@
-# Cannot use built-in ansible modules here since Python may not be instaled
-- name: Checking if python file installed
-  raw: test -f {{ smartos_python_path }} 
-  register: python_file
-  ignore_errors: True
-  when: hypervisor_install_python
-
-- name: Check for pkgin command
-  raw: test -f {{ smartos_pkgin_path }}
-  register: pkgin_file
-  ignore_errors: True
-  when: hypervisor_install_python and python_file|failed
-
-- name: Check for bootstrap install file
-  raw: test -f {{ smartos_bootstrap_path }}
-  register: bootstrap_file
-  ignore_errors: True
-  when: hypervisor_install_python and python_file|failed and pkgin_file|failed 
-
-- name: Download bootstrap file only if required
-  raw: curl -ks {{ bootstrap_url }} -o {{ smartos_bootstrap_path }}
-  when: hypervisor_install_python and bootstrap_file|failed
-
-- name: Verify bootstrap file
-  raw: if [[ `digest -a sha256 {{ smartos_bootstrap_path }}` == "{{ bootstrap_sha256sum }}" ]]; then exit 0; else exit 1; fi
-  when: hypervisor_install_python and python_file|failed and pkgin_file|failed
-
-- name: Extracting bootstrap file
-  raw: tar -zxpf {{ smartos_bootstrap_path }} -C /
-  when: hypervisor_install_python and python_file|failed and pkgin_file|failed
-
-- name: Install python
-  raw: "{{ smartos_pkgin_path }} -fy install {{ smartos_python_pkgname }}"
-  when: hypervisor_install_python and python_file|failed
+- include: python_bootstrap.yml
+  delegate_to: "{{ hypervisor_host }}"
+  when: hypervisor_install_python and provision_mode
 
 - name: Get vars
   setup:
+  delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
+
+- include: images.yml
+  delegate_to: "{{ hypervisor_host }}"
+  when: provision_mode
+
+# - name: Get virtual machine uuid
+#   command: vmadm list -o uuid -p hostname={{ alias }}.{{ domain }}
+#   delegate_to: "{{ hypervisor_host }}"
+#   register: vmadm_list
+# 
+# - name: set running machine
+#   delegate_to: "{{ hypervisor_host }}"
+#   set_fact: vm_uuid={{ vmadm_list.stdout }}
+# 
+# - debug: var=vm_uuid
+# 
+# - name: Get virtual info
+#   command: vmadm get {{ vm_uuid }}
+#   delegate_to: "{{ hypervisor_host }}"
+#   register: vm_info
+# 
+# - debug: var=vm_info
+# 
+# - fail: msg="blah"
 
 - name: Creating Ansible tmp file for vm .json
   command: mktemp /tmp/ansible.XXXXXXX
   register: tmp_json
+  delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
 
 - name: Populating template file
   template: src={{ template_file }} dest={{ tmp_json.stdout }}
+  delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
 
 - name: Importing image uuid
   shell: imgadm import {{ image_uuid }}
+  delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
 
-- name: Provisioning Instance
+- name: Provisioning virtual machine
   shell: cat {{ tmp_json.stdout }} | vmadm create
+  delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
 
 - name: Waiting 10 secs for SSH daemon
   wait_for: host={{ nics[0]['ip'] }} port=22 search_regex=OpenSSH delay=10
+  delegate_to: "{{ hypervisor_host }}"
   when: provision_mode

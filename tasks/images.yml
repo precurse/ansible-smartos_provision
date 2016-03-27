@@ -1,0 +1,22 @@
+- name: Get joyent image uuid from name
+  command: imgadm avail -j name={{ image_name }} type=zone-dataset
+  register: imgadm_raw
+  when: image_uuid is not defined and brand == "joyent"
+ 
+- name: Get linux image uuid from name
+  command: imgadm avail -j name={{ image_name }} type=lx-dataset
+  register: imgadm_raw
+  when: image_uuid is not defined and brand == "lx"
+ 
+- name: Parse imgadm output
+  set_fact: imgadm_clean="{{ imgadm_raw.stdout|from_json }}"
+  when: image_uuid is not defined
+ 
+- name: Set image uuid from name
+  set_fact:
+    image_uuid: "{{ imgadm_clean[-1]['manifest']['uuid'] }}"
+    kernel_version: "{{ imgadm_clean[-1]['manifest']['tags']['kernel_version'] }}"
+  when: image_uuid is not defined
+ 
+- name: Importing image uuid
+  command: imgadm import {{ image_uuid }}
