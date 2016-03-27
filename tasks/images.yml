@@ -1,31 +1,42 @@
 - name: Get joyent image uuid from name
   command: imgadm avail -j name={{ image_name }} type=zone-dataset
-  register: imgadm_raw
+  register: imgadm_raw_joyent_name
   when: image_uuid is not defined and brand == "joyent"
- 
+
+
+
 - name: Get linux image uuid from name
   command: imgadm avail -j name={{ image_name }} type=lx-dataset
-  register: imgadm_raw_name
+  register: imgadm_raw_lx_name
   when: image_uuid is not defined and brand == "lx"
 
 - name: Get linux kernel version from uuid
   command: imgadm avail -j uuid={{ image_uuid }} type=lx-dataset
-  register: imgadm_raw_uuid
+  register: imgadm_raw_lx_uuid
   when: image_uuid is defined and brand == "lx"
 
-- name: Parse imgadm (by name) output
-  set_fact: imgadm_clean="{{ imgadm_raw_name.stdout|from_json }}"
+- name: Parse imgadm joyent (by name) output
+  set_fact: imgadm_clean="{{ imgadm_raw_joyent_name.stdout|from_json }}"
+  when: image_uuid is not defined and brand == "joyent"
+
+- name: Parse imgadm lx (by name) output
+  set_fact: imgadm_clean="{{ imgadm_raw_lx_name.stdout|from_json }}"
   when: image_uuid is not defined and brand == "lx"
 
-- name: Parse imgadm (by uuid) output
-  set_fact: imgadm_clean="{{ imgadm_raw_uuid.stdout|from_json }}"
+- name: Parse imgadm lx (by uuid) output
+  set_fact: imgadm_clean="{{ imgadm_raw_lx_uuid.stdout|from_json }}"
   when: image_uuid is defined and brand == "lx"
 
-- name: Set image vars from imgadm output
+- name: Set image vars from imgadm joyent output
+  set_fact:
+    image_uuid: "{{ imgadm_clean[-1]['manifest']['uuid'] }}"
+  when: image_uuid is not defined and brand == "joyent"
+
+- name: Set image vars from imgadm lx output
   set_fact:
     image_uuid: "{{ imgadm_clean[-1]['manifest']['uuid'] }}"
     kernel_version: "{{ imgadm_clean[-1]['manifest']['tags']['kernel_version'] }}"
-  when: image_uuid is not defined
- 
+  when: image_uuid is not defined and brand == "lx"
+
 - name: Importing image uuid
   command: imgadm import {{ image_uuid }}

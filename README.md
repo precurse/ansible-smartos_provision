@@ -35,7 +35,7 @@ autoboot [OPTIONAL] (options: "true" or "false". default: "true")
 image_uuid: `imgadm avail` from SmartOS global zone has possible values.
    Listed here: https://docs.joyent.com/public-cloud/instances/infrastructure/images as well.
 
-image_name: `imgadm avail` from SmartOS global zone will show possible values.
+image_name: `imgadm avail` from SmartOS global zone will show possible values. (i.e. debian-8 or base-64-lts)
 
   NOTE: This should be used instead of image_uuid when the latest
      version of an image is desired. If image_uuid is also set,
@@ -110,7 +110,7 @@ Example Playbook
     provision_mode: false  # default
     autoboot: "true"  # default
     image_uuid: c540b62c-beb2-11e5-8512-8b1694a57f84
-    image_name: minimal-64-lts
+    image_name: minimal-64-lts  # this will be ignored since image_uuid is used
     cpu_cap: 100  # default
     max_phy_mem: 512  # default
     quota: 10  # default
