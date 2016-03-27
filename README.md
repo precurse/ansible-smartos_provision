@@ -12,7 +12,7 @@ Your ssh key must be installed on the root user (/root/.ssh/authorized_keys) on 
 The global zone itself doesn't need python installed for this to function since templates are created
 locally and then pushed to SmartOS via SSH.
 
-Set `remote_user` and `ansible_python_interpreter` for SmartOS global zone under your inventory file like so:
+Set `ansible_user` and `ansible_python_interpreter` for SmartOS global zone under your inventory file like so:
 
 ```
 [smartos]
