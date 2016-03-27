@@ -1,5 +1,5 @@
-provision_mode: 0
-hypervisor_user: root
+hypervisor_install_python: false
+provision_mode: false
 cpu_cap: 100
 max_phy_mem: 512
 quota: 10
@@ -8,3 +8,11 @@ kernel_version: 3.16.0
 template_file: provision.json.j2
 domain: local
 user_script: "/usr/sbin/mdata-get root_authorized_keys > ~root/.ssh/authorized_keys ; /usr/sbin/mdata-get root_authorized_keys > ~admin/.ssh/authorized_keys"
+
+bootstrap_url: https://pkgsrc.joyent.com/packages/SmartOS/bootstrap/bootstrap-2015Q4-tools.tar.gz
+bootstrap_sha256sum: fb7e852e3a8dc4a18cdb527a413313955bc53869d80b9cfa44729df8fa58f5b2
+
+smartos_pkgin_path: /opt/tools/bin/pkgin
+smartos_python_path: /opt/tools/bin/python2
+smartos_bootstrap_path: /opt/ansible_python_bootstrap.tgz
+smartos_python_pkgname: python27

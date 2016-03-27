@@ -1,16 +1,59 @@
-- name: Creating Ansible tmp file
-  local_action: command mktemp /tmp/ansible.XXXXXXX
+# Cannot use built-in ansible modules here since Python may not be instaled
+- name: Checking if python file installed
+  raw: test -f {{ smartos_python_path }} 
+  register: python_file
+  ignore_errors: True
+  when: hypervisor_install_python
+
+- name: Check for pkgin command
+  raw: test -f {{ smartos_pkgin_path }}
+  register: pkgin_file
+  ignore_errors: True
+  when: hypervisor_install_python and python_file|failed
+
+- name: Check for bootstrap install file
+  raw: test -f {{ smartos_bootstrap_path }}
+  register: bootstrap_file
+  ignore_errors: True
+  when: hypervisor_install_python and python_file|failed and pkgin_file|failed 
+
+- name: Download bootstrap file only if required
+  raw: curl -ks {{ bootstrap_url }} -o {{ smartos_bootstrap_path }}
+  when: hypervisor_install_python and bootstrap_file|failed
+
+- name: Verify bootstrap file
+  raw: if [[ `digest -a sha256 {{ smartos_bootstrap_path }}` == "{{ bootstrap_sha256sum }}" ]]; then exit 0; else exit 1; fi
+  when: hypervisor_install_python and python_file|failed and pkgin_file|failed
+
+- name: Extracting bootstrap file
+  raw: tar -zxpf {{ smartos_bootstrap_path }} -C /
+  when: hypervisor_install_python and python_file|failed and pkgin_file|failed
+
+- name: Install python
+  raw: "{{ smartos_pkgin_path }} -fy install {{ smartos_python_pkgname }}"
+  when: hypervisor_install_python and python_file|failed
+
+- name: Get vars
+  setup:
+  when: provision_mode
+
+- name: Creating Ansible tmp file for vm .json
+  command: mktemp /tmp/ansible.XXXXXXX
   register: tmp_json
-  when: provision_mode != 0
+  when: provision_mode
+
 - name: Populating template file
-  local_action: template src={{ template_file }} dest={{ tmp_json.stdout }}
-  when: provision_mode != 0
+  template: src={{ template_file }} dest={{ tmp_json.stdout }}
+  when: provision_mode
+
 - name: Importing image uuid
-  local_action: shell /usr/bin/ssh {{ hypervisor_user }}@{{ hypervisor_ip }} imgadm import {{ image_uuid }}
-  when: provision_mode != 0
+  shell: imgadm import {{ image_uuid }}
+  when: provision_mode
+
 - name: Provisioning Instance
-  local_action: shell cat {{ tmp_json.stdout }} | /usr/bin/ssh {{ hypervisor_user }}@{{ hypervisor_ip }} vmadm create
-  when: provision_mode != 0
+  shell: cat {{ tmp_json.stdout }} | vmadm create
+  when: provision_mode
+
 - name: Waiting 10 secs for SSH daemon
-  local_action: wait_for host={{ nics[0]['ip'] }} port=22 search_regex=OpenSSH delay=10
-  when: provision_mode != 0
+  wait_for: host={{ nics[0]['ip'] }} port=22 search_regex=OpenSSH delay=10
+  when: provision_mode
