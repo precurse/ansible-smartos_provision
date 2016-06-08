@@ -7,6 +7,10 @@
   delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
 
+# First check if VM is already provisioned
+
+
+
 - include: images.yml
   delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
