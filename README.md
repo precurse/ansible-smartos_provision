@@ -15,7 +15,7 @@ NOTE: Python on the SmartOS global zone is now a requirement.
 
 While it is strongly recommended setting `hypervisor_install_python` to true (file checksumming is done before install to be safe), you can still install it manually using `pkgin in python27` after installing  `bootstrap-YYYYQ#-tools.tar.gz`.
 
-https://pkgsrc.joyent.com/install-on-illumos/ has the manual instructions. Ensure you use the `bootstrap-2015Q4-tools.tar.gz` file.
+https://pkgsrc.joyent.com/install-on-illumos/ has the manual instructions. Ensure you use the `bootstrap-2016Q4-tools.tar.gz` file.
 
 ### SmartOS Global Zone Inventory
 
