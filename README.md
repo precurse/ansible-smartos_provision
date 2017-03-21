@@ -148,7 +148,11 @@ ssh-add ~/.ssh/id_rsa
 ansible-playbook -i example.hosts example.yml
 ```
 Because there's currently no way of telling if the Virtual Machine is already proisioned, it's advised to keep `provision_mode` set to `false`
-and having a `provision_vm.yml` playbook to handle provisioning and running it like `ansible-playbook provision_vm.yml --limit=host`
+and having a `provision_vm.yml` playbook to handle provisioning and running it like
+
+```
+ansible-playbook provision_vm.yml --limit=host
+```
 
 Example provision_vm.yml playbook:
 ```
