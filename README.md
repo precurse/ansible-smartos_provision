@@ -147,8 +147,34 @@ ssh-agent bash
 ssh-add ~/.ssh/id_rsa
 ansible-playbook -i example.hosts example.yml
 ```
-Because there's currently no way of telling if the Virtual Machine is already proisioned, it's advised to keep `provision_mode` set to `false` by default and running the following when you'd like to create the VM:
-`ansible-playbook -i example.hosts example.yml --extra-vars "provision_mode=true"`
+Because there's currently no way of telling if the Virtual Machine is already proisioned, it's advised to keep `provision_mode` set to `false`
+and having a `provision_vm.yml` playbook to handle provisioning and running it like `ansible-playbook provision_vm.yml --limit=host`
+
+Example provision_vm.yml playbook:
+```
+- hosts: all
+  gather_facts: false
+  roles:
+    - role: smartos_provision
+  vars:
+    - provision_mode: true
+    - smartos_python_path: /opt/local/bin/python2
+  post_tasks:
+    # Install python on joyent zones
+    - block:
+        - name: Upgrading pkgin packages
+          raw: /opt/local/bin/pkgin -y update; /opt/local/bin/pkgin -y upgrade
+        - name: Installing python
+          raw: /opt/local/bin/pkgin -y install python27
+        - set_fact: ansible_python_interpreter={{ smartos_python_path }}
+        - name: Test python install
+          setup:
+      rescue:
+        - debug: msg="Unable to install python on joyent zone"
+
+      when: brand == 'joyent'
+      become: yes
+```
 
 Current Limitations
 -------------------
