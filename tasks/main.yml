@@ -52,6 +52,9 @@
   when: provision_mode
 
 - name: Waiting 10 secs for SSH daemon
-  wait_for: host={{ nics[0]['ip'] }} port=22 search_regex=OpenSSH delay=10
+  wait_for:
+    host: "{{ nics[0]['ip'] }}"
+    port: 22
+    search_regex: OpenSSH
   delegate_to: "{{ hypervisor_host }}"
   when: provision_mode
