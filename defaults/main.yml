@@ -9,7 +9,7 @@ template_file: provision.json.j2
 domain: local
 user_script: "/usr/sbin/mdata-get root_authorized_keys > ~root/.ssh/authorized_keys ; /usr/sbin/mdata-get root_authorized_keys > ~admin/.ssh/authorized_keys"
 
-bootstrap_ver: 2016Q4
+bootstrap_ver: 2017Q3
 bootstrap_url: https://pkgsrc.joyent.com/packages/SmartOS/bootstrap/bootstrap-{{ bootstrap_ver }}-tools.tar.gz
 bootstrap_sha256sum: bd3c156de331e344b1fcacc9deb34b02ddcb7c393cf19e1b8307c0694a68da89
 
