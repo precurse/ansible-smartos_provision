@@ -11,7 +11,7 @@ user_script: "/usr/sbin/mdata-get root_authorized_keys > ~root/.ssh/authorized_k
 
 bootstrap_ver: 2017Q3
 bootstrap_url: https://pkgsrc.joyent.com/packages/SmartOS/bootstrap/bootstrap-{{ bootstrap_ver }}-tools.tar.gz
-bootstrap_sha256sum: bd3c156de331e344b1fcacc9deb34b02ddcb7c393cf19e1b8307c0694a68da89
+bootstrap_sha256sum: bb70dbde6b687b35a7562b06f68837ddb8204c65ab387421ed1a1215449ed05f
 
 smartos_pkgin_path: /opt/tools/bin/pkgin
 smartos_python_path: /opt/tools/bin/python2
