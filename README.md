@@ -74,13 +74,20 @@ nics [REQUIRED]
    - interface [REQUIRED]
    - nic_tag [REQUIRED]
    - vlan_id [OPTIONAL] (default: no vlan)
-   - ip [REQUIRED]
+   - ip [OPTIONAL] (either ip or ips is REQUIRED)
+   - ips [OPTIONAL] (either ip or ips is REQUIRED)
+   - allowed_ips [OPTIONAL]
    - netmask [REQUIRED]
    - gateway [OPTIONAL]
+   - gateways [OPTIONAL]
 
-  example:
+  example (IPv4):
   nics:
     - {interface: "net0", nic_tag: "external", vlan_id: "4", ip: "10.0.4.10", netmask: "255.255.255.0", gateway: "10.0.4.1"}
+
+  example (IPv4+IPv6):
+  nics:
+    - {interface: "net0", nic_tag: "external", ips: ["10.0.4.10/24", "fd66:101f:fc60:aa::1/64"], allowed_ips: ["fd66:101f:fc60:aa::1/64"], netmask: "255.255.255.0", gateway: "10.0.4.1"}
 
 filesystems [OPTIONAL]
   The filesystem source must exist on the global zone before it can be shared to the virtual machine. A `zfs create zones/data/somedata` should be ran once before adding a filesystem to a virtual machine.

@@ -28,11 +28,45 @@
    {% if nic.vlan_id is defined %}
     ,"vlan_id": "{{ nic.vlan_id }}"
    {% endif %}
-   ,"ip": "{{ nic.ip }}"
+   {% if nic.ip is defined %}
+    ,"ip": "{{ nic.ip }}"
+   {% endif %}
+   {% if nic.ips is defined %}
+    , "ips": [
+      {% for i in nic.ips %}
+        {% if loop.first %}
+          "{{ i }}"
+        {% else %}
+          ,"{{ i }}"
+      {% endif %}
+    {% endfor %}
+ ] {% endif %}
+   {% if nic.allowed_ips is defined %}
+    , "allowed_ips": [
+      {% for i in nic.allowed_ips %}
+        {% if loop.first %}
+          "{{ i }}"
+        {% else %}
+          ,"{{ i }}"
+      {% endif %}
+    {% endfor %}
+ ] {% endif %}
    {% if nic.gateway is defined %}
     ,"gateway": "{{ nic.gateway }}"
    {% endif %}
-   ,"netmask": "{{ nic.netmask }}"
+   {% if nic.gateways is defined %}
+    , "gateways": [
+      {% for gw in nic.gateways %}
+        {% if loop.first %}
+          "{{ gw }}"
+        {% else %}
+          ,"{{ gw }}"
+      {% endif %}
+    {% endfor %}
+ ] {% endif %}
+   {% if nic.netmask is defined %}
+    ,"netmask": "{{ nic.netmask }}"
+   {% endif %}
   }
    {% if not loop.last %}
     ,
